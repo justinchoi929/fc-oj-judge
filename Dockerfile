@@ -1,4 +1,4 @@
-FROM registry.cn-hangzhou.aliyuncs.com/library/python:3.10-slim
+FROM python:3.10-slim
 
 # 设置时区
 ENV TZ=Asia/Shanghai
