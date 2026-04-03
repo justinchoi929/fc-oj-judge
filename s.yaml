@@ -4,9 +4,6 @@ access: default
 
 vars:
   region: cn-hangzhou
-  # 修改为你的镜像仓库地址
-  imageRegistry: registry.cn-hangzhou.aliyuncs.com
-  imageNamespace: your-namespace
 
 resources:
   judge:
@@ -19,18 +16,21 @@ resources:
       cpu: 1
       memorySize: 2048
       diskSize: 512
-      timeout: 60
+      timeout: 300
       instanceConcurrency: 10
-      
+
+      environmentVariables:
+        JUDGE_TOKEN: ${env.JUDGE_TOKEN}
+
       customContainerConfig:
-        image: ${vars.imageRegistry}/${vars.imageNamespace}/fc-oj-judge:latest
+        image: crpi-qkw6eqij0k7hoglp.cn-hangzhou.personal.cr.aliyuncs.com/spy-service/fc-oj-judge:latest
         port: 9000
         healthCheckConfig:
           httpGetUrl: /health
           initialDelaySeconds: 3
           periodSeconds: 5
           timeoutSeconds: 3
-      
+
       triggers:
         - triggerName: http-trigger
           triggerType: http
@@ -38,4 +38,4 @@ resources:
             methods:
               - POST
               - GET
-            authType: anonymous  # 改为 function 需要签名认证
+            authType: anonymous
